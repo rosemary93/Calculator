@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Stack;
 
@@ -19,6 +20,7 @@ public class CalculatorActivity extends AppCompatActivity {
     public static final String BUNDLE_KEY_WHOLE_RESULT_TEXT_VIEW = "wholeResultTextView";
     public static final String BUNDLE_KEY_WHOLE_INPUTS = "WholeInputs";
     public static final String BUNDLE_KEY_CURRENT_RESULT = "currentResult";
+    public static final String BUNDLE_KEY_HAS_RESULT = "hasResult";
     private TextView mTextViewResult;
     private TextView mTextViewError;
     private Button mButtonZero;
@@ -46,6 +48,7 @@ public class CalculatorActivity extends AppCompatActivity {
     private double mCurrentResult = 0;
     private String mCurrentOperator = "";
     private boolean mZeroExcp = false;
+    private boolean mhasResult =false;
 
 
     @Override
@@ -61,6 +64,7 @@ public class CalculatorActivity extends AppCompatActivity {
             mCurrentValue=savedInstanceState.getString(BUNDLE_KEY_CURRENT_VALUE);
             mCurrentOperator=savedInstanceState.getString(BUNDLE_KEY_CURRENT_OPERATOR);
             mCurrentResult=savedInstanceState.getDouble(BUNDLE_KEY_CURRENT_RESULT);
+            mhasResult=savedInstanceState.getBoolean(BUNDLE_KEY_HAS_RESULT,false);
             mWholeResultTextView=savedInstanceState.getString(BUNDLE_KEY_WHOLE_RESULT_TEXT_VIEW);
             mWholeInputs=savedInstanceState.getString(BUNDLE_KEY_WHOLE_INPUTS);
             mTextViewResult.setText(mWholeResultTextView);
@@ -80,13 +84,15 @@ public class CalculatorActivity extends AppCompatActivity {
         outState.putString(BUNDLE_KEY_WHOLE_RESULT_TEXT_VIEW,mWholeResultTextView);
         outState.putString(BUNDLE_KEY_WHOLE_INPUTS,mWholeInputs);
         outState.putDouble(BUNDLE_KEY_CURRENT_RESULT,mCurrentResult);
+        outState.putBoolean(BUNDLE_KEY_HAS_RESULT,mhasResult);
     }
 
     private void setListeners() {
         mButtonZero.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Toast.makeText(CalculatorActivity.this, "0", Toast.LENGTH_SHORT).show();
+                checkHasResult();
                 mCurrentValue += "0";
                 showInput("0");
 
@@ -95,7 +101,8 @@ public class CalculatorActivity extends AppCompatActivity {
         mButtonOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Toast.makeText(CalculatorActivity.this, "1", Toast.LENGTH_SHORT).show();
+                checkHasResult();
                 mCurrentValue += "1";
                 showInput("1");
 
@@ -104,7 +111,8 @@ public class CalculatorActivity extends AppCompatActivity {
         mButtonTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Toast.makeText(CalculatorActivity.this, "2", Toast.LENGTH_SHORT).show();
+                checkHasResult();
                 mCurrentValue += "2";
                 showInput("2");
 
@@ -113,7 +121,8 @@ public class CalculatorActivity extends AppCompatActivity {
         mButtonThree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Toast.makeText(CalculatorActivity.this, "3", Toast.LENGTH_SHORT).show();
+                checkHasResult();
                 mCurrentValue += "3";
                 showInput("3");
             }
@@ -121,7 +130,8 @@ public class CalculatorActivity extends AppCompatActivity {
         mButtonFour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Toast.makeText(CalculatorActivity.this, "4", Toast.LENGTH_SHORT).show();
+                checkHasResult();
                 mCurrentValue += "4";
                 showInput("4");
 
@@ -130,7 +140,8 @@ public class CalculatorActivity extends AppCompatActivity {
         mButtonFive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Toast.makeText(CalculatorActivity.this, "5", Toast.LENGTH_SHORT).show();
+                checkHasResult();
                 mCurrentValue += "5";
                 showInput("5");
             }
@@ -139,7 +150,8 @@ public class CalculatorActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
+                Toast.makeText(CalculatorActivity.this, "6", Toast.LENGTH_SHORT).show();
+                checkHasResult();
                 mCurrentValue += "6";
                 showInput("6");
 
@@ -148,7 +160,8 @@ public class CalculatorActivity extends AppCompatActivity {
         mButtonSeven.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Toast.makeText(CalculatorActivity.this, "7", Toast.LENGTH_SHORT).show();
+                checkHasResult();
                 mCurrentValue += "7";
                 showInput("7");
             }
@@ -156,7 +169,8 @@ public class CalculatorActivity extends AppCompatActivity {
         mButtonEight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Toast.makeText(CalculatorActivity.this, "8", Toast.LENGTH_SHORT).show();
+                checkHasResult();
                 mCurrentValue += "8";
                 showInput("8");
             }
@@ -164,7 +178,8 @@ public class CalculatorActivity extends AppCompatActivity {
         mButtonNine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Toast.makeText(CalculatorActivity.this, "9", Toast.LENGTH_SHORT).show();
+                checkHasResult();
                 mCurrentValue += "9";
                 showInput("9");
 
@@ -173,6 +188,8 @@ public class CalculatorActivity extends AppCompatActivity {
         mButtonDot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(CalculatorActivity.this, ".", Toast.LENGTH_SHORT).show();
+                checkHasResult();
                 if (mCurrentValue.isEmpty()) {
                     mCurrentValue = "0.";
                     showInput("0.");
@@ -185,53 +202,56 @@ public class CalculatorActivity extends AppCompatActivity {
         mButtonPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Toast.makeText(CalculatorActivity.this, "+", Toast.LENGTH_SHORT).show();
                 showInput("+");
                 mCurrentOperator = "+";
                 mInputsSrack.push(mCurrentValue);
                 mInputsSrack.push(mCurrentOperator);
-
                 mCurrentValue = "";
+                mhasResult=false;
             }
         });
         mButtonMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Toast.makeText(CalculatorActivity.this, "-", Toast.LENGTH_SHORT).show();
                 showInput("-");
                 mCurrentOperator = "-";
                 mInputsSrack.push(mCurrentValue);
                 mInputsSrack.push(mCurrentOperator);
-
                 mCurrentValue = "";
+                mhasResult=false;
+
             }
         });
         mButtonMultiply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Toast.makeText(CalculatorActivity.this, "*", Toast.LENGTH_SHORT).show();
                 showInput("*");
                 mCurrentOperator = "*";
                 mInputsSrack.push(mCurrentValue);
                 mInputsSrack.push(mCurrentOperator);
                 mCurrentValue = "";
-
+                mhasResult=false;
             }
         });
         mButtonDivision.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(CalculatorActivity.this, "/", Toast.LENGTH_SHORT).show();
                 showInput("/");
                 mCurrentOperator = "/";
                 mInputsSrack.push(mCurrentValue);
                 mInputsSrack.push(mCurrentOperator);
                 mCurrentValue = "";
+                mhasResult=false;
             }
         });
         mButtonEquals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Toast.makeText(CalculatorActivity.this, "=", Toast.LENGTH_SHORT).show();
                 mInputsSrack.push(mCurrentValue);
 
                 calcResult();
@@ -244,6 +264,7 @@ public class CalculatorActivity extends AppCompatActivity {
                     mWholeResultTextView = String.valueOf(mCurrentResult);
                     mTextViewResult.setText(mWholeResultTextView);
                 }
+                mhasResult=true;
             }
         });
         mButtonDelete.setOnClickListener(new View.OnClickListener() {
@@ -262,6 +283,14 @@ public class CalculatorActivity extends AppCompatActivity {
         mWholeResultTextView = "";
         mWholeInputs = "";
         mZeroExcp = false;
+    }
+    private void checkHasResult()
+    {
+        if (mhasResult)
+        {
+            resetAll();
+            mhasResult=false;
+        }
     }
 
     private void calcResult() {
